@@ -42,6 +42,49 @@ greedy_bcp_gl(G) := block([listB : [], restE : G[2], restG : G],
   ),
   return(reverse(listB)))$
 
+greedy_bcp_ogl(G) := block([i, listB : [], restV, ordrestV, restE : G[2], usedE, restG : G],
+  while not(emptyp(restE)) do block(
+    [B : [[first_element(first_element(restG[2]))],[second_element(first_element(restG[2]))]], newMB],
+    newMB : maximal_bc_ogl(B,restG),
+    listB : cons(newMB,listB),
+    usedE : map(setify,cartesian_product(setify(newMB[1]),setify(newMB[2]))),
+    for i in usedE do restE : delete(i,restE),
+    restV : listify(lunion(restE)),
+    ordrestV : [],
+    for i in G[1] do if member(i,restV) then ordrestV : cons(i,ordrestV),
+    reverse(ordrestV),
+    restG : [ordrestV,restE]
+  ),
+  return(reverse(listB)))$
+
+greedy_bcp_mugl(G) := block([i, listB : [], restE : G[2], usedE, restG : G, newF : G[3]],
+  while not(emptyp(restE)) do block(
+    [B : [{first_element(first_element(restG[2]))},{second_element(first_element(restG[2]))}], newMB],
+    newMB : maximal_bc_gl(B,[restG[1],restG[2]]),
+    listB : cons(newMB,listB),
+    usedE : map(setify,cartesian_product(newMB[1],newMB[2])),
+    for i in usedE do if(restG[3](i) = 1) then restE : delete(i,restE) else newF : lambda([e],if e = i then newf(e) - 1 else newf(e)),
+    restG : [lunion(restE),restE,newF]
+  ),
+  return(reverse(listB)))$
+
+greedy_bcp_gg(G) := block([i, j, listB : [], oldrestE : G[2], newrestE : G[2], usedE, restG : G, underE, B, firstE, newMB],
+  while not(emptyp(restG[2])) do block(
+    firstE : restG[3](first_element(restG[2])),
+    B : [{first_element(firstE)},{second_element(firstE)}],
+    underE : map(restG[3],restG[2]),
+    newMB : maximal_bc_gl(B,[restG[1],underE]),
+    listB : cons(newMB,listB),
+    usedE : map(setify,cartesian_product(newMB[1],newMB[2])),
+    newrestE : oldrestE,
+    for i in usedE do
+      for j in oldrestE do if restG[3](j) = i then newrestE : delete(j,newrestE),
+    oldrestE : newrestE,
+    underE : map(G[3],newrestE),
+    restG : [lunion(underE),newrestE,G[3]]
+  ),
+  return(reverse(listB)))$
+
 /*!
 \endhtmlonly
 */

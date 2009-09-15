@@ -27,7 +27,9 @@ oklib_include("OKlib/ComputerAlgebra/Graphs/Lisp/BicliquePartitions/tests/Heuris
 */
 
 okltest_greedy_bcp_gl(greedy_bcp_gl);
-
+okltest_greedy_bcp_ogl(greedy_bcp_ogl);
+okltest_greedy_bcp_mugl(greedy_bcp_mugl);
+okltest_greedy_bcp_gg(greedy_bcp_gg);
 /*!
 \endhtmlonly
 */
