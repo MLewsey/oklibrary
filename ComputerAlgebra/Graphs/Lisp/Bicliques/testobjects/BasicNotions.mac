@@ -41,14 +41,13 @@ okltest_ebc_gg_p(ebc_gg_p);
 */
 
 okltest_maximal_bc_gl(maximal_bc_gl);
-
+okltest_maximal_bc_ogl(maximal_bc_ogl);
 /* *******************
    * Biclique covers *
    *******************
 */
 
 okltest_max_bc_cover_gl(max_bc_cover_gl);
-
 /*!
 \endhtmlonly
 */

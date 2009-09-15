@@ -113,6 +113,29 @@ maximal_bc_gl(B,G) :=
       B[2] : adjoin(v,B[2]),
   B)$
 
+maximal_bc_ogl(B,G) := 
+  if emptyp(G[2]) then
+    if not emptyp(B[2]) then [[],G[1]]
+      else [G[1],[]]
+  else (
+    if B = [[],[]] then
+      B : [[first_element(first_element(G[2]))],
+         [second_element(first_element(G[2]))]]
+  elseif not emptyp(B[1]) and emptyp(B[2]) then block([found : false],
+    for v in setdifference(setify(G[1]),setify(B[1])) unless found do
+      if subsetp(map(setify,cartesian_product(setify(B[1]),{v})),setify(G[2])) then (
+        B[2] : [v], found : true))
+  elseif emptyp(B[1]) and not emptyp(B[2]) then block([found : false],
+    for v in setdifference(setify(G[1]),setify(B[2])) unless found do
+      if subsetp(map(setify,cartesian_product(setify(B[2]),{v})),setify(G[2])) then  (
+        B[1] : [v], found : true)),
+  /* Now established: B[1] and B[2] are not empty. */
+  for v in setdifference(setify(G[1]),union(setify(B[1]),setify(B[2]))) do block(
+   if vbc_gl_p([adjoin(v,setify(B[1])),setify(B[2])],[setify(G[1]),setify(G[2])]) then
+      B[1] : endcons(v,B[1])
+   else if vbc_gl_p([setify(B[1]),adjoin(v,setify(B[2]))],[setify(G[1]),setify(G[2])]) then
+      B[2] : endcons(v,B[2])),
+   B)$
 
 /* *******************
    * Biclique covers *
